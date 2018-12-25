@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <title>动态分割 div 大小—基于 jQuery</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no" />
+    <meta name="author" content="wind" />
+    <meta name="robots" content="index,follow" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <style>
+        .hj-wrap {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            margin: 10px auto;
+            clear: both;
+            overflow: hidden;
+            overflow-x: scroll;
+        }
+        
+        .arrow {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 10px;
+            height: 10px;
+            cursor: e-resize;
+            cursor: n-resize;
+            background-color: red;
+        }
+        
+        .hj-transverse-split-div {
+            position: relative;
+            float: left;
+            height: 100%;
+            padding: 0px;
+            background: gray;
+            overflow: hidden;
+        }
+        
+        .hj-wrap .hj-transverse-split-label {
+            position: absolute;
+            right: 0;
+            top: 0;
+            float: left;
+            width: 2px;
+            height: 100%;
+            display: block;
+            cursor: e-resize;
+            background-color: #fff;
+            z-index: 9;
+        }
+        
+        .hj-vertical-split-div {
+            position: relative;
+            /*height: 33%;*/
+            border: 0px solid red;
+            width: 99.9%;
+            margin: 0 auto;
+            background-color: gray;
+        }
+        
+        .hj-vertical-split-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            display: block;
+            cursor: n-resize;
+            background-color: #fff;
+            z-index: 9;
+        }
+    </style>
+</head>
+
+<body class="demo">
+    <div class='hj-wrap verticals'>
+        <div class="hj-vertical-split-div">上
+            <label class="hj-vertical-split-label"></label>
+        </div>
+        <div class="hj-vertical-split-div">下</div>
+        <div class="arrow"></div>
+    </div>
+    <div class='hj-wrap verticals'>
+        <div class="hj-vertical-split-div">上
+            <label class="hj-vertical-split-label"></label>
+        </div>
+        <div class="hj-vertical-split-div">中
+            <label class="hj-vertical-split-label"></label>
+        </div>
+        <div class="hj-vertical-split-div">下</div>
+        <div class="arrow"></div>
+    </div>
+    <div class='hj-wrap verticals'>
+        <div class="hj-vertical-split-div">上
+            <label class="hj-vertical-split-label"></label>
+        </div>
+        <div class="hj-vertical-split-div">中
+            <label class="hj-vertical-split-label"></label>
+        </div>
+        <div class="hj-vertical-split-div">中
+            <label class="hj-vertical-split-label"></label>
+        </div>
+        <div class="hj-vertical-split-div">下</div>
+        <div class="arrow"></div>
+    </div>
+
+    <div class='hj-wrap'>
+        <div class="hj-transverse-split-div">
+            横 向
+            <label class="hj-transverse-split-label"></label>
+        </div>
+        <div class="hj-transverse-split-div">横 向 2
+            <label class="hj-transverse-split-label"></label>
+        </div>
+        <div class="hj-transverse-split-div">横 向 3
+            <label class="hj-transverse-split-label"></label>
+        </div>
+        <div class="hj-transverse-split-div">横 向 4
+            <label class="hj-transverse-split-label"></label>
+        </div>
+        <div class="hj-transverse-split-div">横 向 5
+        </div>
+        <div class="arrow"></div>
+    </div>
+    <div class='hj-wrap'>
+        <div class="hj-transverse-split-div">
+            横 向
+            <label class="hj-transverse-split-label"></label>
+        </div>
+        <div class="hj-transverse-split-div verticals">
+            <div class="hj-vertical-split-div">竖 向
+                <label class="hj-vertical-split-label"></label>
+            </div>
+            <div class="hj-vertical-split-div">竖 向 2
+                <label class="hj-vertical-split-label"></label>
+            </div>
+            <div class="hj-vertical-split-div">竖 向 3</div>
+        </div>
+        <div class="arrow"></div>
+    </div>
+    <div class='hj-wrap'>
+        <div class="hj-transverse-split-div">
+            横 向
+            <label class="hj-transverse-split-label"></label>
+        </div>
+        <div class="hj-transverse-split-div">
+            横 向 2
+            <label class="hj-transverse-split-label"></label>
+        </div>
+        <div class="hj-transverse-split-div verticals">
+            <div class="hj-vertical-split-div">
+                竖 向
+                <label class="hj-vertical-split-label"></label>
+            </div>
+            <div class="hj-vertical-split-div">竖 向 2
+                <label class="hj-vertical-split-label"></label>
+            </div>
+            <div class="hj-vertical-split-div">竖 向 3</div>
+        </div>
+        <div class="arrow"></div>
+    </div>
+    <div class='hj-wrap'>
+        <div class="hj-transverse-split-div">
+            横 向
+            <label class="hj-transverse-split-label"></label>
+        </div>
+        <div class="hj-transverse-split-div verticals">
+            <div class="hj-vertical-split-div">竖 向
+                <label class="hj-vertical-split-label"></label>
+            </div>
+            <div class="hj-vertical-split-div">竖 向 2</div>
+        </div>
+        <div class="arrow"></div>
+    </div>
+
+    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="split.js"></script>
+</body>
+
+</html>

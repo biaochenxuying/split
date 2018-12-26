@@ -1,39 +1,23 @@
 /**
- * name:   monitorSplitWindows.js
- * route:   /static/js/control/ui
- * author:  luozhubang
- * date:    2016-10-26
- * function: 监听窗口拖动事件，依赖于/static/js/control/ui/DynamicWindow.js,
+ * name:   split.js
+ * author:  biaochen
+ * date:    2018-12-26
  *
  */
 $(function() {
-    //鼠标横向、竖向操作对象
-    var thisTransverseObject, thisVerticalObject, thisParentObject;
+    //鼠标横向、竖向、和改变父高度的上下 操作对象
+    var thisTransverseObject, thisVerticalObject, thisArrowObject;
     //文档对象
     var doc = document;
     //横向分割栏
     var transverseLabels = $(".hj-wrap").find(".hj-transverse-split-label");
     //竖向分割栏
     var verticalLabels = $(".hj-wrap").find(".hj-vertical-split-label");
-    var parentDrag = $(".hj-wrap").find(".arrow");
-    // var length = $(".hj-wrap").length;
-    // if (length > 0) {
-    //     for (var i = 0; i < length; i++) {
-    //         //console.log($($(".hj-wrap")[i]));
-    //         var width = $($(".hj-wrap")[i])[0].offsetWidth;
-    //         // console.log("width :", width);
-    //         // console.log("width :", $($(".hj-wrap")[i]));
-    //         var hjDivNums = $($(".hj-wrap")[i]).children(".hj-transverse-split-div");
-    //         // var defaultWidth = Math.floor(100 / hjDivNums.length);
-    //         var defaultWidth = Math.floor(width / hjDivNums.length);
-    //         $($(".hj-wrap")[i])
-    //             .children(".hj-transverse-split-div")
-    //             .width(defaultWidth + "px");
-    //         // .width(defaultWidth + "%");
-    //     }
-    // }
+    // 改变父高度的 箭头 div
+    var parentArrow = $(".hj-wrap").find(".arrow");
 
-    function setWidth(type){
+    // 设置宽
+    function setWidth(type) {
         if (type === "init") {
             var length = $(".hj-wrap").length;
             if (length > 0) {
@@ -48,12 +32,11 @@ $(function() {
                     // .width(defaultWidth + "%");
                 }
             }
-        }else{
-            // var transverseParentDivs = $(".hj-transverse-split-div")
+        } else {
+            // 设置百分比
             var transverseDivs = $(".hj-transverse-split-div")
             var widthLength = transverseDivs.length
             for (var i = 0; i < widthLength; i++) {
-                // console.log($(verticalsDivs[i]));
                 var width = $(transverseDivs[i]).width();
                 var parentWidth = $(transverseDivs[i])
                     .parent()
@@ -61,8 +44,10 @@ $(function() {
                 var rate = (width / parentWidth) * 100 + "%";
                 $(transverseDivs[i]).css({ width: rate });
             }
-        } 
+        }
     }
+
+    // 设置高
     function setHeight(type) {
         if (type === "init") {
             var verticalsParentDivs = $(".verticals");
@@ -79,48 +64,25 @@ $(function() {
                     .children(".hj-vertical-split-div")
                     .height(defaultHeight + "%");
                 // .height(defaultHeight + "px");
-                // console.log("parentHeight :", parentHeight);
             }
         } else {
+            // 设置百分比
             var verticalsDivs = $(".hj-vertical-split-div");
-          var heightLength = verticalsDivs.length;
-          for (var i = 0; i < heightLength; i++) {
-            // console.log($(verticalsDivs[i]));
-            var height = $(verticalsDivs[i]).height();
-            var parentHeight = $(verticalsDivs[i])
-              .parent()
-              .height();
-              console.log("height", height);
-            console.log("parentHeight", parentHeight);
-            var rate = (height / parentHeight) * 100 + "%";
-            $(verticalsDivs[i]).css({ height: rate });
-          }
-            // var verticalsDivs = $(".verticals").children(".hj-vertical-split-div");
-            // var lengths = verticalsDivs.length;
-            // for (var i = 0; i < lengths; i++) {
-            //     // console.log($(verticalsDivs[i]));
-            //     var height = $(verticalsDivs[i]).height();
-            //     var parentHeight = $(verticalsDivs[i])
-            //         .parent()
-            //         .height();
-            //         console.log('height',height)
-            //         console.log('parentHeight',parentHeight)
-            //     var rate = (height / parentHeight) * 100 + "%";
-            //     $(verticalsDivs[i]).css({ height: rate });
-            //     // console.log("height :", height);
-            //     // console.log("parentHeight :", parentHeight);
-            //     // console.log("rate :", rate);
-            //     // console.log("$(verticalsDivs[i]) :", $(verticalsDivs[i]));
-            //     // console.log("$(verticalsDivs[i]).parent() :", $(verticalsDivs[i]).parent());
-            //     // console.log("width :", width);
-            // }
+            var heightLength = verticalsDivs.length;
+            for (var i = 0; i < heightLength; i++) {
+                var height = $(verticalsDivs[i]).height();
+                var parentHeight = $(verticalsDivs[i])
+                    .parent()
+                    .height();
+                var rate = (height / parentHeight) * 100 + "%";
+                $(verticalsDivs[i]).css({ height: rate });
+            }
         }
     }
 
     setWidth('init')
     setHeight("init");
 
-    
     //定义一个对象
     function PointerObject() {
         this.el = null; //当前鼠标选择的对象
@@ -145,14 +107,14 @@ $(function() {
         thisVerticalObject.el = this;
         thisVerticalObject.clickY = e.pageY; //记录鼠标竖向初始位置
     });
-    //竖向分隔栏绑定事件
-    parentDrag.bind("mousedown", function(e) {
+    //上下绑定事件
+    parentArrow.bind("mousedown", function(e) {
         //console.log("mousedown");
-        thisParentObject = new PointerObject();
-        thisParentObject.transverseDragging = true; //鼠标可横向拖动
-        thisParentObject.verticalDragging = true; //鼠标可竖向拖动
-        thisParentObject.el = this;
-        thisParentObject.clickY = e.pageY; //记录鼠标竖向初始位置
+        thisArrowObject = new PointerObject();
+        // thisArrowObject.transverseDragging = true; //鼠标可横向拖动
+        thisArrowObject.verticalDragging = true; //鼠标可竖向拖动
+        thisArrowObject.el = this;
+        thisArrowObject.clickY = e.pageY; //记录鼠标竖向初始位置
     });
 
     doc.onmousemove = function(e) {
@@ -188,8 +150,7 @@ $(function() {
                                 .width() + changeDistance
                             );
                         thisTransverseObject.clickX = e.pageX;
-                        // console.log("e.pageX", e.pageX);
-                        // $(thisTransverseObject.el).offset({ left: e.pageX });
+                        $(thisTransverseObject.el).offset({ left: e.pageX });
                     }
                 } else {
                     //鼠标向右移动
@@ -220,8 +181,7 @@ $(function() {
                                 .width() - changeDistance
                             );
                         thisTransverseObject.clickX = e.pageX;
-                        // console.log("e.pageX", e.pageX);
-                        // $(thisTransverseObject.el).offset({ left: e.pageX });
+                        $(thisTransverseObject.el).offset({ left: e.pageX });
                     }
                 }
                 $(thisTransverseObject.el).width(2);
@@ -258,8 +218,7 @@ $(function() {
                                 .height() + changeDistance
                             );
                         thisVerticalObject.clickY = e.pageY;
-                        // console.log("e.pageX", e.pageY);
-                        // $(thisVerticalObject.el).offset({ top: e.pageY });
+                        $(thisVerticalObject.el).offset({ top: e.pageY });
                     }
                 } else {
                     //鼠标向下移动
@@ -289,121 +248,111 @@ $(function() {
                                 .height() - changeDistance
                             );
                         thisVerticalObject.clickY = e.pageY;
-                        // console.log("e.pageX", e.pageY);
-                        // $(thisVerticalObject.el).offset({ top: e.pageY });
+                        $(thisVerticalObject.el).offset({ top: e.pageY });
                     }
                 }
                 $(thisVerticalObject.el).height(2);
             }
         }
-        //鼠标竖向拖动
-        if (thisParentObject != null) {
-            if (thisParentObject.verticalDragging) {
+        // 改变父的 高度
+        if (thisArrowObject != null) {
+            //鼠标竖向拖动
+            if (thisArrowObject.verticalDragging) {
                 var changeDistance = 0;
-                if (thisParentObject.clickY >= e.pageY) {
+                if (thisArrowObject.clickY >= e.pageY) {
                     //鼠标向上移动
-                    changeDistance = Number(thisParentObject.clickY) - Number(e.pageY);
-                    // console.log("向上移动 changeDistance", changeDistance);
+                    changeDistance = Number(thisArrowObject.clickY) - Number(e.pageY);
                     if (
-                        $(thisParentObject.el)
+                        $(thisArrowObject.el)
                         .parent()
                         .height() -
                         changeDistance <
                         50
                     ) {} else {
-                        $(thisParentObject.el)
+                        $(thisArrowObject.el)
                             .parent()
                             .height(
-                                $(thisParentObject.el)
+                                $(thisArrowObject.el)
                                 .parent()
                                 .height() - changeDistance
                             );
-                        thisParentObject.clickY = e.pageY;
-                        $(thisParentObject.el).offset({ bottom: e.pageY });
+                        thisArrowObject.clickY = e.pageY;
+                        $(thisArrowObject.el).offset({ bottom: e.pageY });
                     }
                 } else {
                     //鼠标向下移动
-                    changeDistance = Number(e.pageY) - Number(thisParentObject.clickY);
-
-                    // if (
-                    //     $(thisParentObject.el)
-                    //     .parent()
-                    //     .height() -
-                    //     changeDistance <
-                    //     40
-                    // ) {} else {
-                    // console.log("向下移动 changeDistance", changeDistance);
-                    $(thisParentObject.el)
+                    changeDistance = Number(e.pageY) - Number(thisArrowObject.clickY);
+                    $(thisArrowObject.el)
                         .parent()
                         .height(
-                            $(thisParentObject.el)
+                            $(thisArrowObject.el)
                             .parent()
                             .height() + changeDistance
                         );
-                    thisParentObject.clickY = e.pageY;
-                    $(thisParentObject.el).offset({ bottom: e.pageY });
-                    // }
+                    thisArrowObject.clickY = e.pageY;
+                    $(thisArrowObject.el).offset({ bottom: e.pageY });
                 }
-                $(thisParentObject.el).height(10);
+                $(thisArrowObject.el).height(10);
             }
-            // if (thisParentObject.transverseDragging) {
+            //鼠标横向拖动 (还没做，模仿上面的 鼠标竖向拖动 即可))
+            // if (thisArrowObject.transverseDragging) {
             //     var changeDistance = 0;
-            //     if (thisParentObject.clickX >= e.pageX) {
+            //     if (thisArrowObject.clickX >= e.pageX) {
             //         //鼠标向左移动
-            //         changeDistance = Number(thisParentObject.clickX) - Number(e.pageX);
+            //         changeDistance = Number(thisArrowObject.clickX) - Number(e.pageX);
             //         if (
-            //             $(thisParentObject.el)
+            //             $(thisArrowObject.el)
             //             .parent()
             //             .width() -
             //             changeDistance <
             //             20
             //         ) {} else {
-            //             $(thisParentObject.el)
+            //             $(thisArrowObject.el)
             //                 .parent()
             //                 .width(
-            //                     $(thisParentObject.el)
+            //                     $(thisArrowObject.el)
             //                     .prev()
             //                     .width() - changeDistance
             //                 );
-            //             $(thisParentObject.el)
+            //             $(thisArrowObject.el)
             //                 .parent()
             //                 .width(
-            //                     $(thisParentObject.el)
+            //                     $(thisArrowObject.el)
             //                     .parent()
             //                     .width() + changeDistance
             //                 );
-            //             thisParentObject.clickX = e.pageX;
-            //             $(thisParentObject.el).offset({ left: e.pageX - 4 });
+            //             thisArrowObject.clickX = e.pageX;
+            //             $(thisArrowObject.el).offset({ left: e.pageX - 4 });
             //         }
             //     } else {
             //         //鼠标向右移动
-            //         changeDistance = Number(e.pageX) - Number(thisParentObject.clickX);
+            //         changeDistance = Number(e.pageX) - Number(thisArrowObject.clickX);
             //         if (
-            //             $(thisParentObject.el)
+            //             $(thisArrowObject.el)
             //             .parent()
             //             .width() -
             //             changeDistance <
             //             20
             //         ) {} else {
-            //             $(thisParentObject.el)
+            //             $(thisArrowObject.el)
             //                 .parent()
             //                 .width(
-            //                     $(thisParentObject.el)
+            //                     $(thisArrowObject.el)
             //                     .parent()
             //                     .width() + changeDistance
             //                 );
-            //             $(thisParentObject.el)
+            //             $(thisArrowObject.el)
             //                 .parent()
             //                 .width(
-            //                     $(thisParentObject.el)
+            //                     $(thisArrowObject.el)
             //                     .parent()
             //                     .width() - changeDistance
             //                 );
-            //             thisParentObject.clickX = e.pageX;
-            //             $(thisParentObject.el).offset({ left: e.pageX - 4 });
+            //             thisArrowObject.clickX = e.pageX;
+            //             $(thisArrowObject.el).offset({ left: e.pageX - 4 });
             //         }
             //     }
-            //     $(thisParentObject.el).width(10);
+            //     $(thisArrowObject.el).width(10);
             // }
         }
     };
@@ -411,6 +360,7 @@ $(function() {
     $(doc).mouseup(function(e) {
         setHeight("setHeight");
         setWidth("setWidth");
+        // 鼠标弹起时设置不能拖动
         if (thisTransverseObject != null) {
             thisTransverseObject.transverseDragging = false;
             thisTransverseObject = null;
@@ -419,9 +369,9 @@ $(function() {
             thisVerticalObject.verticalDragging = false;
             thisVerticalObject = null;
         }
-        if (thisParentObject != null) {
-            thisParentObject.verticalDragging = false;
-            thisParentObject = null;
+        if (thisArrowObject != null) {
+            thisArrowObject.verticalDragging = false;
+            thisArrowObject = null;
         }
 
         e.cancelBubble = true;

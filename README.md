@@ -406,11 +406,8 @@ $(function() {
 
 ![](https://upload-images.jianshu.io/upload_images/12890819-f8665293cc8d0dcf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-对 **全栈修炼** 有兴趣的朋友可以扫下方二维码关注我的公众号
- 
-我会不定期更新有价值的内容，长期运营。
+如果您觉得本项目和文章不错或者对你有所帮助，请给个星吧，你的肯定就是我继续创作的最大动力。
 
-关注公众号并回复 **福利** 可领取免费学习资料，福利详情请猛戳：  [Python、Java、Linux、Go、node、vue、react、javaScript](https://biaochenxuying.cn/articleDetail?article_id=5bf4ba3c245730373274df61)
+笔者经常在这里 BB：
 
-![全栈修炼](https://upload-images.jianshu.io/upload_images/12890819-bce9560fec5c49ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
+![全栈修炼](https://upload-images.jianshu.io/upload_images/12890819-9399d149e09f638e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
